@@ -1,0 +1,76 @@
+
+
+.application {
+  background-color: #C4C4C4;
+  margin: 0 auto;
+  width: 661px;
+  min-height: 763px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
+
+.select {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.application input {
+  margin-top: 40px;
+  border: none;
+  font-size: 48px;
+  line-height: 56px;
+  width: 500px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+
+}
+
+.select-content {
+  width: 100%;
+  cursor: pointer;
+  font-size: 30px;
+  line-height: 35px;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  background-color: #E3E3E3;
+}
+
+.select-content:hover {
+  background-color: #65CDF9;
+  cursor: pointer;
+}
+
+.chosens {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  width: 503px;
+}
+
+.chosen {
+  display: flex;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 24px;
+  padding: 8px 16px;
+  line-height: 28px;
+  border: 1px solid #000;
+  background-color: #E27BEB;
+}
+
+.btn-close {
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-repeat: no-repeat;
+  background-image: url("../img/Cross.png");
+  background-color: transparent;
+  background-size: contain;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  width: 42px;
+  height: 38.5px;
+}
