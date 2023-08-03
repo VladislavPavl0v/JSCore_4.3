@@ -9,6 +9,8 @@ chosens.addEventListener("click", function(event) {
     target.parentElement.remove();
 });
 
+
+
 inputContainer.addEventListener("click", function(event) {
     let target = event.target;
     if (!target.classList.contains("select-content")) {
@@ -24,7 +26,7 @@ function removePredictions() {
 }
 
 function showPredictions(repositories) {
-    let dropdownPredictions = document.querySelectorAll(".select-content");
+    //let dropdownPredictions = document.querySelectorAll(".select-content");
     removePredictions();
 
     for (let repositoryIndex = 0; repositoryIndex < 5; repositoryIndex++) {
@@ -45,26 +47,29 @@ function addChosen(target) {
     chosens.innerHTML += `<div class="chosen">Name: ${name}<br>Owner: ${owner}<br>Stars: ${stars}<button class="btn-close"></button></div>`;
 }
 
-async function getPredictions() {
+async function getPredictions(repositoriesPart) {
     const urlSearchRepositories = new URL("https://api.github.com/search/repositories");
-    let repositoriesPart = inputSearch.value;
-    if (repositoriesPart == "") {
-	removePredictions();
-	return;
+
+    if (repositoriesPart === "") {
+        removePredictions();
+        return;
     }
 
-    urlSearchRepositories.searchParams.append("q", repositoriesPart)
+    urlSearchRepositories.searchParams.append("q", repositoriesPart);
+
     try {
-	let response = await fetch(urlSearchRepositories);
-	if (response.ok) {
-	    let repositories = await response.json();
-	    showPredictions(repositories);
-	}
-	else return null;
+        let response = await fetch(urlSearchRepositories);
+        if (response.ok) {
+            let repositories = await response.json();
+            showPredictions(repositories);
+        } else {
+            return null;
+        }
     } catch(error) {
-	return null;
+        return null;
     }
 }
+
 
 function debounce(fn, timeout) {
     let timer = null;
@@ -81,7 +86,10 @@ function debounce(fn, timeout) {
 }
 
 const getPredictionsDebounce = debounce(getPredictions, 500);
-inputSearch.addEventListener("input", getPredictionsDebounce);
+inputSearch.addEventListener("input", function(event) {
+    getPredictionsDebounce(event.target.value);
+});
+
 
 
 
