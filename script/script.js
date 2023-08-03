@@ -26,10 +26,9 @@ function removePredictions() {
 }
 
 function showPredictions(repositories) {
-    //let dropdownPredictions = document.querySelectorAll(".select-content");
     removePredictions();
 
-    for (let repositoryIndex = 0; repositoryIndex < 5; repositoryIndex++) {
+    for (let repositoryIndex = 0; repositoryIndex < repositories.items.length; repositoryIndex++) {
 	let name = repositories.items[repositoryIndex].name;
 	let owner = repositories.items[repositoryIndex].owner.login;
 	let stars = repositories.items[repositoryIndex].stargazers_count;
@@ -56,6 +55,7 @@ async function getPredictions(repositoriesPart) {
     }
 
     urlSearchRepositories.searchParams.append("q", repositoriesPart);
+    urlSearchRepositories.searchParams.append("per_page", 5);
 
     try {
         let response = await fetch(urlSearchRepositories);
