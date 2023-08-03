@@ -2,19 +2,17 @@ const inputSearch = document.querySelector("input");
 const inputContainer = document.querySelector(".select");
 const chosens = document.querySelector(".chosens");
 
-chosens.addEventListener("click", function(event) {
+chosens.addEventListener("click", function (event) {
     let target = event.target;
     if (!target.classList.contains("btn-close")) return;
 
     target.parentElement.remove();
 });
 
-
-
-inputContainer.addEventListener("click", function(event) {
+inputContainer.addEventListener("click", function (event) {
     let target = event.target;
     if (!target.classList.contains("select-content")) {
-	return;
+        return;
     }
     addChosen(target);
     inputSearch.value = "";
@@ -29,12 +27,12 @@ function showPredictions(repositories) {
     removePredictions();
 
     for (let repositoryIndex = 0; repositoryIndex < repositories.items.length; repositoryIndex++) {
-	let name = repositories.items[repositoryIndex].name;
-	let owner = repositories.items[repositoryIndex].owner.login;
-	let stars = repositories.items[repositoryIndex].stargazers_count;
+        let name = repositories.items[repositoryIndex].name;
+        let owner = repositories.items[repositoryIndex].owner.login;
+        let stars = repositories.items[repositoryIndex].stargazers_count;
 
-	let dropdownContent = `<div class="select-content" data-owner="${owner}" data-stars="${stars}">${name}</div>`;
-	inputContainer.innerHTML += dropdownContent;
+        let dropdownContent = `<div class="select-content" data-owner="${owner}" data-stars="${stars}">${name}</div>`;
+        inputContainer.insertAdjacentHTML("beforeend", dropdownContent);
     }
 }
 
@@ -42,8 +40,9 @@ function addChosen(target) {
     let name = target.textContent;
     let owner = target.dataset.owner;
     let stars = target.dataset.stars;
-    
-    chosens.innerHTML += `<div class="chosen">Name: ${name}<br>Owner: ${owner}<br>Stars: ${stars}<button class="btn-close"></button></div>`;
+
+    let chosenHTML = `<div class="chosen">Name: ${name}<br>Owner: ${owner}<br>Stars: ${stars}<button class="btn-close"></button></div>`;
+    chosens.insertAdjacentHTML("beforeend", chosenHTML);
 }
 
 async function getPredictions(repositoriesPart) {
@@ -65,28 +64,27 @@ async function getPredictions(repositoriesPart) {
         } else {
             return null;
         }
-    } catch(error) {
+    } catch (error) {
         return null;
     }
 }
-
 
 function debounce(fn, timeout) {
     let timer = null;
 
     return (...args) => {
-	clearTimeout(timer);
-	return new Promise((resolve) => {
-	    timer = setTimeout(
-		() => resolve(fn(...args)),
-		timeout,
-	    );
-	});
+        clearTimeout(timer);
+        return new Promise((resolve) => {
+            timer = setTimeout(
+                () => resolve(fn(...args)),
+                timeout,
+            );
+        });
     };
 }
 
 const getPredictionsDebounce = debounce(getPredictions, 500);
-inputSearch.addEventListener("input", function(event) {
+inputSearch.addEventListener("input", function (event) {
     getPredictionsDebounce(event.target.value);
 });
 
