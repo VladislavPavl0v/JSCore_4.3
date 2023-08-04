@@ -20,7 +20,9 @@ inputContainer.addEventListener("click", function (event) {
 });
 
 function removePredictions() {
-    inputContainer.innerHTML = "";
+    while (inputContainer.firstChild) {
+        inputContainer.removeChild(inputContainer.firstChild);
+    }
 }
 
 function showPredictions(repositories) {
@@ -31,8 +33,13 @@ function showPredictions(repositories) {
         let owner = repositories.items[repositoryIndex].owner.login;
         let stars = repositories.items[repositoryIndex].stargazers_count;
 
-        let dropdownContent = `<div class="select-content" data-owner="${owner}" data-stars="${stars}">${name}</div>`;
-        inputContainer.insertAdjacentHTML("beforeend", dropdownContent);
+        let dropdownContent = document.createElement("div");
+        dropdownContent.classList.add("select-content");
+        dropdownContent.dataset.owner = owner;
+        dropdownContent.dataset.stars = stars;
+        dropdownContent.textContent = name;
+
+        inputContainer.appendChild(dropdownContent);
     }
 }
 
@@ -41,8 +48,16 @@ function addChosen(target) {
     let owner = target.dataset.owner;
     let stars = target.dataset.stars;
 
-    let chosenHTML = `<div class="chosen">Name: ${name}<br>Owner: ${owner}<br>Stars: ${stars}<button class="btn-close"></button></div>`;
-    chosens.insertAdjacentHTML("beforeend", chosenHTML);
+    let chosenHTML = `Name: ${name}\nOwner: ${owner}\nStars: ${stars}`;
+    let chosenElement = document.createElement("div");
+    chosenElement.classList.add("chosen");
+    chosenElement.textContent = chosenHTML;
+
+    let closeButton = document.createElement("button");
+    closeButton.classList.add("btn-close");
+    chosenElement.appendChild(closeButton);
+
+    chosens.appendChild(chosenElement);
 }
 
 async function getPredictions(repositoriesPart) {
@@ -87,7 +102,3 @@ const getPredictionsDebounce = debounce(getPredictions, 500);
 inputSearch.addEventListener("input", function (event) {
     getPredictionsDebounce(event.target.value);
 });
-
-
-
-
